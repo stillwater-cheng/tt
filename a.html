@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uncertainty Research in China - LogToku Example</title>
+    <title>Uncertainty Research in China - LogToku Example (JSON Loaded)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -120,7 +120,7 @@
                                 University of Electronic Science and Technology of China
                             </label>
                         </div>
-                        </div>
+                    </div>
                 </div>
 
                 <div>
@@ -159,22 +159,24 @@
 
                 <div class="bg-white p-6 rounded-lg shadow-sm mb-6 markdown-body">
                     <h1 class="text-2xl font-bold mb-4">Paper Showcase: LogToku Example</h1>
-                    <p class="mb-4">This page showcases an example paper. In a full version, this repository would collect and showcase cutting-edge research.</p>
+                    <p class="mb-4">This page showcases an example paper, loaded from an external JSON file. In a full version, this repository would collect and showcase cutting-edge research.</p>
                     
                     <div class="bg-blue-50 p-4 rounded-md border border-blue-200 mt-6">
                         <h3 class="font-medium text-blue-800 mb-2"><i class="fas fa-info-circle mr-2"></i>Note</h3>
-                        <p class="text-blue-700">The paper below is loaded dynamically. Click on it to see more details.</p>
+                        <p class="text-blue-700">The paper below is loaded dynamically from <code>papers.json</code>. Click on it to see more details.</p>
                     </div>
                 </div>
 
-                <div id="papers-container" class="grid grid-cols-1 md:grid-cols-1 gap-6"> </div>
+                <div id="papers-container" class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                </div>
 
                 <div id="loading" class="text-center py-8">
                     <i class="fas fa-spinner fa-spin text-2xl text-gray-400"></i>
-                    <p class="mt-2 text-gray-500">Loading paper...</p>
+                    <p class="mt-2 text-gray-500">Loading papers from JSON...</p>
                 </div>
 
-                <div class="flex justify-center mt-8" id="pagination-controls" style="display:none;"> <nav class="inline-flex rounded-md shadow-sm">
+                <div class="flex justify-center mt-8" id="pagination-controls" style="display:none;">
+                    <nav class="inline-flex rounded-md shadow-sm">
                         <button
                             class="px-3 py-1 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                             Previous
@@ -202,18 +204,23 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <div class="mb-2"> <p id="modal-authors" class="text-sm text-gray-600"></p> </div>
+                <div class="mb-2">
+                     <p id="modal-authors" class="text-sm text-gray-600"></p>
+                </div>
                 <div class="mb-4">
                     <span id="modal-date"
                         class="inline-block px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full"></span>
                     <span id="modal-institution"
                         class="inline-block px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full ml-2"></span>
                 </div>
-                <div class="mb-4"> <h4 class="font-medium text-gray-700 mb-2">Abstract</h4>
-                    <p id="modal-abstract" class="text-gray-600 text-sm"></p> </div>
-                <div class="flex flex-wrap gap-2 mb-4"> <span id="modal-topics" class="text-sm text-gray-600"></span>
+                <div class="mb-4">
+                    <h4 class="font-medium text-gray-700 mb-2">Abstract</h4>
+                    <p id="modal-abstract" class="text-gray-600 text-sm"></p>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2"> <a id="modal-pdf" href="#" target="_blank"
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span id="modal-topics-container"></span> </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <a id="modal-pdf" href="#" target="_blank"
                         class="flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition text-sm">
                         <i class="fas fa-file-pdf mr-2 text-red-500"></i> PDF
                     </a>
@@ -236,49 +243,57 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const papersData = [ // Renamed to papersData to avoid conflict if fetching externally later
-                {
-                    id: 1,
-                    title_en: "LogToku: A Token-Unified Framework for Log Parsing and Anomaly Detection",
-                    title_zh: "LogToku: 一个统一Token的日志解析与异常检测框架 (请在此处输入官方或更准确的中文翻译)",
-                    authors: ["Huan Ma", "Liansheng Zhuang", "Haotian Chen", "Shenglin Zhang", "Dingkui Yan", "Zhiliang Wang", "Parker", "Yuan He", "Hui Li"],
-                    institution: "University of Electronic Science and Technology of China (and others)",
-                    date: "2025-02-01", // Submission date
-                    topics: ["Log Parsing", "Anomaly Detection", "Deep Learning", "Natural Language Processing"],
-                    abstract_en: "Current log analysis methods often rely on a multi-stage pipeline that includes log parsing, feature extraction, and downstream task modeling (e.g., anomaly detection). However, the discrete nature of these stages and the handcrafted features limit the overall performance. In this paper, we propose LogToku, a novel token-unified framework that jointly learns log parsing and anomaly detection. LogToku leverages a pre-trained language model (PLM) to encode raw log messages into contextualized token representations. A log template generator and an anomaly detector are then built upon these shared token representations. The template generator identifies the static and dynamic parts of logs, effectively performing parsing, while the anomaly detector identifies abnormal log patterns. By unifying token representations across tasks, LogToku encourages the model to learn more robust and generalizable features. We conduct extensive experiments on three public datasets (HDFS, BGL, Spirit). The results show that LogToku significantly outperforms state-of-the-art methods in both log parsing and anomaly detection, demonstrating the effectiveness of our token-unified approach.",
-                    abstract_zh: "当前的日志分析方法通常依赖于一个多阶段流水线，包括日志解析、特征提取和下游任务建模（例如异常检测）。然而，这些阶段的离散性和手工制作的特征限制了整体性能。在本文中，我们提出了 LogToku，一个新颖的统一Token框架，它联合学习日志解析和异常检测。LogToku 利用预训练语言模型 (PLM) 将原始日志消息编码为上下文化的Token表示。然后，在这些共享的Token表示之上构建日志模板生成器和异常检测器。模板生成器识别日志的静态和动态部分，有效地执行解析，而异常检测器识别异常的日志模式。通过跨任务统一Token表示，LogToku 鼓励模型学习更鲁棒和可泛化的特征。我们在三个公共数据集 (HDFS, BGL, Spirit) 上进行了广泛的实验。结果表明，LogToku 在日志解析和异常检测方面均显著优于最先进的方法，证明了我们统一Token方法的有效性。(请在此处输入官方或更准确的中文翻译)",
-                    pdf_link: "https://arxiv.org/pdf/2502.00290.pdf",
-                    arxiv_link: "https://arxiv.org/abs/2502.00290",
-                    github_link: "https://github.com/MaHuanAAA/logtoku",
-                    clicks: 42, // Example clicks
-                    notes_en: "This paper introduces LogToku, a unified framework for log parsing and anomaly detection using PLMs. It shows SOTA results on HDFS, BGL, and Spirit datasets.",
-                    notes_zh: "这篇论文介绍了 LogToku，一个使用预训练语言模型的统一日志解析和异常检测框架。它在 HDFS, BGL, 和 Spirit 数据集上展示了当前最佳结果。(请在此处输入官方或更准确的中文笔记)"
-                }
-            ];
-
+            let allPapersData = []; // To store data from papers.json
             let currentLanguage = 'en';
-            let sortedPapers = [...papersData]; // Initially, directly use papersData as it's a single item or pre-sorted if needed
+            let sortedPapers = []; // To store filtered/sorted papers for display
+
+            const papersContainer = document.getElementById('papers-container');
+            const loadingIndicator = document.getElementById('loading');
+            const paginationControls = document.getElementById('pagination-controls');
+
+            async function loadAndDisplayPapers() {
+                loadingIndicator.classList.remove('hidden');
+                papersContainer.innerHTML = ''; // Clear previous papers
+                try {
+                    const response = await fetch('papers.json');
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}, Failed to load papers.json`);
+                    }
+                    allPapersData = await response.json();
+                    
+                    // Default sort: by date, newest first
+                    sortedPapers = [...allPapersData].sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    displayPapers();
+
+                } catch (error) {
+                    console.error("Error loading or parsing papers.json:", error);
+                    papersContainer.innerHTML = `<p class="text-red-500 text-center">Error loading papers: ${error.message}. Please ensure 'papers.json' exists in the same directory and is valid JSON.</p>`;
+                } finally {
+                    loadingIndicator.classList.add('hidden');
+                }
+            }
 
             function displayPapers() {
-                const container = document.getElementById('papers-container');
-                const loading = document.getElementById('loading');
-                const paginationControls = document.getElementById('pagination-controls');
+                papersContainer.innerHTML = ''; // Clear previous papers before rendering
 
-                loading.classList.add('hidden');
-                container.innerHTML = '';
-
-                if (sortedPapers.length === 0) {
-                    container.innerHTML = '<p class="text-gray-600">No papers found.</p>';
+                if (sortedPapers.length === 0 && allPapersData.length > 0) { // No papers match filter but data exists
+                    papersContainer.innerHTML = '<p class="text-gray-600 text-center">No papers match the current filters.</p>';
                     paginationControls.style.display = 'none';
                     return;
                 }
-                
-                if (sortedPapers.length <= 1) { // Hide pagination if only one or zero papers
-                     paginationControls.style.display = 'none';
-                } else {
-                     paginationControls.style.display = 'flex';
+                 if (sortedPapers.length === 0 && allPapersData.length === 0 && !loadingIndicator.classList.contains('hidden')) {
+                    // Still loading or failed to load, message handled by loadAndDisplayPapers's catch block
+                    paginationControls.style.display = 'none';
+                    return;
                 }
 
+
+                if (sortedPapers.length <= 1) {
+                     paginationControls.style.display = 'none';
+                } else {
+                     paginationControls.style.display = 'flex'; // Or 'inline-flex' depending on styling
+                }
 
                 sortedPapers.forEach(paper => {
                     const paperElement = document.createElement('div');
@@ -305,15 +320,14 @@
                     `;
                     paperElement.addEventListener('click', () => {
                         showPaperModal(paper);
-                        paper.clicks += 1; // This updates in memory, will reset on page reload
-                        // To persist clicks, you'd need a backend or local storage solution
-                        // For this example, we'll update the card view directly if modal is closed and reopened
+                        // Increment click count (client-side only, resets on reload)
+                        paper.clicks = (paper.clicks || 0) + 1;
                         const eyeCountElement = paperElement.querySelector('.fa-eye').parentElement;
                         if (eyeCountElement) {
                             eyeCountElement.innerHTML = `${paper.clicks} <i class="fas fa-eye"></i>`;
                         }
                     });
-                    container.appendChild(paperElement);
+                    papersContainer.appendChild(paperElement);
                 });
             }
 
@@ -325,11 +339,11 @@
                 document.getElementById('modal-institution').textContent = paper.institution;
                 document.getElementById('modal-abstract').textContent = paper[`abstract_${currentLanguage}`];
                 
-                const modalTopicsContainer = document.getElementById('modal-topics');
-                modalTopicsContainer.innerHTML = ''; // Clear existing
+                const modalTopicsContainer = document.getElementById('modal-topics-container'); // Ensure this ID matches HTML
+                modalTopicsContainer.innerHTML = ''; 
                 paper.topics.forEach(topic => {
                     const topicSpan = document.createElement('span');
-                    topicSpan.className = 'inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full'; // Changed style for modal
+                    topicSpan.className = 'inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full';
                     topicSpan.textContent = topic;
                     modalTopicsContainer.appendChild(topicSpan);
                 });
@@ -360,60 +374,46 @@
                     document.querySelectorAll('.language-tab').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
                     currentLanguage = this.dataset.lang;
-                    displayPapers(); // Re-render papers for language change
-                    // If modal is open, you might want to update its content too, or close it
-                    const openModal = document.getElementById('paper-modal');
-                    if (!openModal.classList.contains('hidden')) {
-                        // Find which paper is open and re-call showPaperModal
-                        // For simplicity, this example doesn't track the currently open paper for live language update in modal
-                        // A more robust solution would store the current paper object or ID.
-                        // For now, we can just close it or the user has to reopen it.
-                        // openModal.classList.add('hidden'); // Option: close modal on lang change
-                    }
+                    displayPapers();
                 });
             });
             
-            // Sorting (remains largely the same, but acts on 'papersData')
-            // Sort by Date button
             document.getElementById('sort-date').addEventListener('click', function() {
                 this.classList.add('bg-blue-100', 'text-blue-800');
                 this.classList.remove('bg-gray-100', 'text-gray-800', 'hover:bg-gray-200');
                 document.getElementById('sort-clicks').classList.remove('bg-blue-100', 'text-blue-800');
                 document.getElementById('sort-clicks').classList.add('bg-gray-100', 'text-gray-800', 'hover:bg-gray-200');
                 
-                sortedPapers = [...papersData].sort((a, b) => new Date(b.date) - new Date(a.date));
+                sortedPapers = [...allPapersData].sort((a, b) => new Date(b.date) - new Date(a.date));
                 displayPapers();
             });
 
-            // Sort by Popularity button
             document.getElementById('sort-clicks').addEventListener('click', function() {
                 this.classList.add('bg-blue-100', 'text-blue-800');
                 this.classList.remove('bg-gray-100', 'text-gray-800', 'hover:bg-gray-200');
                 document.getElementById('sort-date').classList.remove('bg-blue-100', 'text-blue-800');
                 document.getElementById('sort-date').classList.add('bg-gray-100', 'text-gray-800', 'hover:bg-gray-200');
 
-                sortedPapers = [...papersData].sort((a, b) => b.clicks - a.clicks);
+                sortedPapers = [...allPapersData].sort((a, b) => (b.clicks || 0) - (a.clicks || 0));
                 displayPapers();
             });
 
-            // Topic/Institution filtering (not fully implemented for this example, just logs)
             document.querySelectorAll('.topic-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', function () {
                     console.log(`Filter changed: ${this.id}, checked: ${this.checked}`);
-                    // To implement filtering:
-                    // 1. Get all checked topic/institution filters.
-                    // 2. Filter `papersData` based on these.
-                    // 3. Update `sortedPapers` with the filtered result.
-                    // 4. Call `displayPapers()`.
+                    // Implement actual filtering logic here if needed:
+                    // 1. Get all selected topic and institution values.
+                    // 2. Filter `allPapersData` based on these selections.
+                    //    Example: let filtered = allPapersData.filter(p => selectedTopics.every(t => p.topics.includes(t)));
+                    // 3. Update `sortedPapers` with the `filtered` array.
+                    // 4. Re-apply current sort preference to `sortedPapers`.
+                    // 5. Call `displayPapers()`.
+                    // For this example, filtering is not fully implemented to keep it concise.
                 });
             });
 
-            // Initial display
-            // Default sort by date for initial display
-            sortedPapers = [...papersData].sort((a, b) => new Date(b.date) - new Date(a.date));
-            setTimeout(() => { // Simulate loading
-                displayPapers();
-            }, 500);
+            // Initial load of papers from JSON
+            loadAndDisplayPapers();
         });
     </script>
 </body>

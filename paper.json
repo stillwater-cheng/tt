@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "title_en": "Estimating LLM Uncertainty with Evidence",
+    "title_zh": "基于证据的大语言模型不确定性估计",
+    "authors": ["Huan Ma", "Jingdong Chen", "Joey Tianyi Zhou", "Guangyu Wang", "Changqing Zhang"],
+    "institution": "Affiliated institutions not specified in the abstract (e.g., Tencent AI Lab, Nanyang Technological University, etc.)",
+    "date": "2025-05-09",
+    "topics": ["Large Language Models", "Uncertainty Estimation", "Natural Language Processing", "Reliability", "Hallucination Detection"],
+    "abstract_en": "Over the past few years, Large Language Models (LLMs) have developed rapidly and are widely applied in various domains. However, LLMs face the issue of hallucinations, generating responses that may be unreliable when the models lack relevant knowledge. To be aware of potential hallucinations, uncertainty estimation methods have been introduced, and most of them have confirmed that reliability lies in critical tokens. However, probability-based methods perform poorly in identifying token reliability, limiting their practical utility. In this paper, we reveal that the probability-based method fails to estimate token reliability due to the loss of evidence strength information which is accumulated in the training stage. Therefore, we present Logits-induced token uncertainty (LogTokU), a framework for estimating decoupled token uncertainty in LLMs, enabling real-time uncertainty estimation without requiring multiple sampling processes. We employ evidence modeling to implement LogTokU and use the estimated uncertainty to guide downstream tasks. The experimental results demonstrate that LogTokU has significant effectiveness and promise.",
+    "abstract_zh": "近年来，大语言模型（LLMs）发展迅速，并广泛应用于各个领域。然而，LLMs 存在“幻觉”问题，在缺乏相关知识时可能生成不可靠的回应。为了识别潜在的幻觉，研究者引入了不确定性估计方法，其中多数研究表明可靠性主要集中在关键 token 上。然而，基于概率的方法在识别 token 可靠性方面表现不佳，限制了其实用价值。本文揭示了基于概率的方法因丢失训练阶段积累的证据强度信息而无法准确估计 token 可靠性。因此，我们提出了 Logits-induced token uncertainty（LogTokU），这是一个用于估计 LLM 中解耦 token 不确定性的框架，能够在无需多次采样的前提下实现实时不确定性估计。我们采用证据建模实现 LogTokU，并利用估计的不确定性指导下游任务。实验结果表明，LogTokU 具有显著的有效性和应用前景。",
+    "pdf_link": "https://arxiv.org/pdf/2502.00290v5.pdf", 
+    "arxiv_link": "https://arxiv.org/abs/2502.00290", 
+    "github_link": "https://github.com/xxx/LogTokU",   
+    "clicks": 42,
+    "notes_en": "This paper proposes LogTokU, a novel uncertainty estimation framework for LLMs based on logits and evidence modeling, showing promising results in detecting unreliable tokens without multiple sampling.",
+    "notes_zh": "本文提出了一种基于 logits 和证据建模的大语言模型不确定性估计新框架 LogTokU，可在无需多次采样的情况下有效检测不可靠 token，展示了良好的应用前景。"
+  }
+]
